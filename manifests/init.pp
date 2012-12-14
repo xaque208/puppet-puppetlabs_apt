@@ -22,7 +22,7 @@ class puppetlabs_apt(
   }
 
   apt::source { "puppetlabs":
-    location   => "http://apt.puppetlabs.com/debian/",
+    location   => "http://apt.puppetlabs.com/",
     key        => '4BD6EC30',
     key_source => 'http://apt.puppetlabs.com/pubkey.gpg',
     pin        => '900',
