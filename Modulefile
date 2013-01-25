@@ -5,4 +5,4 @@ license 'Apache 2.0'
 author 'Puppet Labs Operations'
 summary 'Installs the Puppet Labs community apt repository'
 
-dependency 'puppetlabs/apt', '1.x'
+dependency 'puppetlabs/apt', '>= 1.0.0'
