@@ -1,5 +1,5 @@
 name 'ploperations-puppetlabs_apt'
-version '0.0.2'
+version '0.0.3'
 source 'https://github.com/puppetlabs-operations/puppet-puppetlabs_apt'
 license 'Apache 2.0'
 author 'Puppet Labs Operations'
