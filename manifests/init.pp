@@ -9,11 +9,16 @@
 #   Default: false
 #
 class puppetlabs_apt(
-  $enable_devel = false
+  $enable_devel = false,
+  $release = $::lsbdistcodename
 ) {
 
   if $osfamily != 'Debian' {
     fail("${module_name} only supports Debian based operating systems, not '${osfamily}'")
+  }
+
+  if $release == undef {
+    fail("Failed to determine the release codename")
   }
 
   $repo_list = $enable_devel ? {
@@ -27,6 +32,7 @@ class puppetlabs_apt(
     key_source => 'https://apt.puppetlabs.com/pubkey.gpg',
     pin        => '900',
     repos      => $repo_list,
+    release    => $release,
   }
 
   package{ "puppetlabs-release":
