@@ -12,6 +12,7 @@ class puppetlabs_apt(
   $enable_devel = false,
   $release = $::lsbdistcodename
 ) {
+  include '::apt'
 
   if $osfamily != 'Debian' {
     fail("${module_name} only supports Debian based operating systems, not '${osfamily}'")
