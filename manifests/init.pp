@@ -31,7 +31,7 @@ class puppetlabs_apt(
     location   => "http://apt.puppetlabs.com/",
     key        => '4BD6EC30',
     key_source => 'https://apt.puppetlabs.com/pubkey.gpg',
-    pin        => '900',
+    pin        => '550',
     repos      => $repo_list,
     release    => $release,
   }
