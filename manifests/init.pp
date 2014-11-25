@@ -14,12 +14,12 @@ class puppetlabs_apt(
 ) {
   include '::apt'
 
-  if $osfamily != 'Debian' {
-    fail("${module_name} only supports Debian based operating systems, not '${osfamily}'")
+  if $::osfamily != 'Debian' {
+    fail("${::module_name} only supports Debian based operating systems, not '${::osfamily}'")
   }
 
   if $release == undef {
-    fail("Failed to determine the release codename")
+    fail('Failed to determine the release codename')
   }
 
   $repo_list = $enable_devel ? {
@@ -27,17 +27,18 @@ class puppetlabs_apt(
     false => 'main dependencies',
   }
 
-  apt::source { "puppetlabs":
-    location   => "http://apt.puppetlabs.com/",
-    key        => '4BD6EC30',
+  apt::source { 'puppetlabs':
+    location   => 'http://apt.puppetlabs.com/',
+    key        => '1054B7A24BD6EC30',
     key_source => 'https://apt.puppetlabs.com/pubkey.gpg',
     pin        => '550',
     repos      => $repo_list,
     release    => $release,
   }
 
-  package{ "puppetlabs-release":
+  package{ 'puppetlabs-release':
     ensure  => installed,
-    require => Apt::Source["puppetlabs"],
+    require => Apt::Source['puppetlabs'],
   }
 }
+
