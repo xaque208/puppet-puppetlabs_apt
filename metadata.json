@@ -1,5 +1,5 @@
 {
-  "name": "puppet-puppetlabs_apt",
+  "name": "ploperations-puppetlabs_apt",
   "version": "0.0.4",
   "author": "Puppet Labs Operations",
   "summary": "Installs the Puppet Labs community apt repository",
