@@ -10,7 +10,7 @@ shared_examples 'shared examples' do
 end
 
 describe 'puppetlabs_apt' do
-  describe 'puppetlabs_apt class on Debian' do
+  describe 'On a supported Debian version' do
     let(:facts) {{
       :osfamily  => 'Debian',
       :lsbdistid => 'Debian',
@@ -27,6 +27,18 @@ describe 'puppetlabs_apt' do
 
       it_behaves_like "shared examples"
       it { should contain_apt__source('puppetlabs').with_repos('main dependencies devel') }
+    end
+
+    describe 'On an unsupported Debian version' do
+      let(:facts) {{
+          :osfamily  => 'Debian',
+          :lsbdistid => 'Debian',
+          :lsbdistcodename => 'jessie',
+      }}
+      context "when on jessie or stretch" do
+        let(:params) {{ }}
+        it { should contain_apt__source('puppetlabs').with_release('wheezy') }
+      end
     end
   end
 
