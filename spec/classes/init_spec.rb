@@ -5,8 +5,8 @@ shared_examples 'shared examples' do
   it { should contain_class('apt') }
   it { should contain_class('puppetlabs_apt') }
   it { should contain_package('puppetlabs-release') }
-  it { should contain_apt_key('Add key: 1054B7A24BD6EC30 from Apt::Source puppetlabs') }
   it { should contain_apt__source('puppetlabs').with_location('http://apt.puppetlabs.com/') }
+  it { should contain_apt__source('puppetlabs').with_key('47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30') }
 end
 
 describe 'puppetlabs_apt' do
