@@ -27,13 +27,23 @@ class puppetlabs_apt(
     false => 'main dependencies',
   }
 
+  case $release {
+    'jessie','stretch': {
+      $_release = 'wheezy'
+      notify { "Puppet Labs does not *yet* provide packages for ${release}": }
+    }
+    default: {
+      $_release = $release
+    }
+  }
+
   apt::source { 'puppetlabs':
     location   => 'http://apt.puppetlabs.com/',
     key        => '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
     key_source => 'https://apt.puppetlabs.com/pubkey.gpg',
     pin        => '550',
     repos      => $repo_list,
-    release    => $release,
+    release    => $_release,
   }
 
   package{ 'puppetlabs-release':

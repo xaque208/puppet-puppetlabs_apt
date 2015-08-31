@@ -5,12 +5,12 @@ shared_examples 'shared examples' do
   it { should contain_class('apt') }
   it { should contain_class('puppetlabs_apt') }
   it { should contain_package('puppetlabs-release') }
-  it { should contain_apt_key('Add key: 1054B7A24BD6EC30 from Apt::Source puppetlabs') }
   it { should contain_apt__source('puppetlabs').with_location('http://apt.puppetlabs.com/') }
+  it { should contain_apt__source('puppetlabs').with_key('47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30') }
 end
 
 describe 'puppetlabs_apt' do
-  describe 'puppetlabs_apt class on Debian' do
+  describe 'On a supported Debian version' do
     let(:facts) {{
       :osfamily  => 'Debian',
       :lsbdistid => 'Debian',
@@ -27,6 +27,18 @@ describe 'puppetlabs_apt' do
 
       it_behaves_like "shared examples"
       it { should contain_apt__source('puppetlabs').with_repos('main dependencies devel') }
+    end
+
+    describe 'On an unsupported Debian version' do
+      let(:facts) {{
+          :osfamily  => 'Debian',
+          :lsbdistid => 'Debian',
+          :lsbdistcodename => 'jessie',
+      }}
+      context "when on jessie or stretch" do
+        let(:params) {{ }}
+        it { should contain_apt__source('puppetlabs').with_release('wheezy') }
+      end
     end
   end
 
