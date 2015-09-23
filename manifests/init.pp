@@ -37,16 +37,19 @@ class puppetlabs_apt(
     }
   }
 
+
   apt::source { 'puppetlabs':
-    location   => 'http://apt.puppetlabs.com/',
-    key        => '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
-    key_source => 'https://apt.puppetlabs.com/pubkey.gpg',
-    pin        => '550',
-    repos      => $repo_list,
-    release    => $_release,
+    location => 'http://apt.puppetlabs.com/',
+    repos    => $repo_list,
+    release  => $_release,
+    pin      => '550',
+    key      => {
+      'id'     => '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
+      'server' => 'pgp.mit.edu',
+    },
   }
 
-  package{ 'puppetlabs-release':
+  package { 'puppetlabs-release':
     ensure  => installed,
     require => Apt::Source['puppetlabs'],
   }

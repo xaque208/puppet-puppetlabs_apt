@@ -6,7 +6,8 @@ shared_examples 'shared examples' do
   it { should contain_class('puppetlabs_apt') }
   it { should contain_package('puppetlabs-release') }
   it { should contain_apt__source('puppetlabs').with_location('http://apt.puppetlabs.com/') }
-  it { should contain_apt__source('puppetlabs').with_key('47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30') }
+  it { should contain_apt__source('puppetlabs').with_key({'id' => '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
+                                                          'server' => 'pgp.mit.edu'}) }
 end
 
 describe 'puppetlabs_apt' do
