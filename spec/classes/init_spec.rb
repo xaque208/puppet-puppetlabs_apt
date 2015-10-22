@@ -57,9 +57,9 @@ describe 'puppetlabs_apt' do
       let(:facts) {{
           :osfamily  => 'Debian',
           :lsbdistid => 'Debian',
-          :lsbdistcodename => 'jessie',
+          :lsbdistcodename => 'stretch',
       }}
-      context "when on jessie or stretch" do
+      context "when on stretch" do
         let(:params) {{ }}
         it { should contain_apt__source('puppetlabs').with_release('wheezy') }
       end

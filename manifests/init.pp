@@ -35,7 +35,14 @@ class puppetlabs_apt(
   }
 
   case $release {
-    'jessie','stretch': {
+    'jessie': {
+      if $enable_collection {
+        $_release = $release
+      } else {
+        notify { 'Puppet Labs only supports the PC1 dist.  Please set enable_collection => true': }
+      }
+    }
+    'stretch': {
       $_release = 'wheezy'
       notify { "Puppet Labs does not *yet* provide packages for ${release}": }
     }
