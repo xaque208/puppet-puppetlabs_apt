@@ -10,7 +10,8 @@
 #
 class puppetlabs_apt(
   $enable_devel = false,
-  $release = $::lsbdistcodename
+  $enable_collection = false,
+  $release = $::lsbdistcodename,
 ) {
   include '::apt'
 
@@ -23,8 +24,14 @@ class puppetlabs_apt(
   }
 
   $repo_list = $enable_devel ? {
-    true  => 'main dependencies devel',
-    false => 'main dependencies',
+    true => $enable_collection ? {
+      true  => 'main dependencies devel PC1',
+      false => 'main dependencies devel',
+    },
+    false => $enable_collection ? {
+      true  => 'main dependencies PC1',
+      false => 'main dependencies',
+    },
   }
 
   case $release {
@@ -36,7 +43,6 @@ class puppetlabs_apt(
       $_release = $release
     }
   }
-
 
   apt::source { 'puppetlabs':
     location => 'http://apt.puppetlabs.com/',
@@ -52,6 +58,13 @@ class puppetlabs_apt(
   package { 'puppetlabs-release':
     ensure  => installed,
     require => Apt::Source['puppetlabs'],
+  }
+
+  if $enable_collection {
+    package { 'puppetlabs-release-pc1':
+      ensure  => installed,
+      require => Apt::Source['puppetlabs'],
+    }
   }
 }
 
