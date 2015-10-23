@@ -6,7 +6,8 @@ shared_examples 'shared examples' do
   it { should contain_class('puppetlabs_apt') }
   it { should contain_package('puppetlabs-release') }
   it { should contain_apt__source('puppetlabs').with_location('http://apt.puppetlabs.com/') }
-  it { should contain_apt__source('puppetlabs').with_key('47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30') }
+  it { should contain_apt__source('puppetlabs').with_key({'id' => '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
+                                                          'server' => 'pgp.mit.edu'}) }
 end
 
 describe 'puppetlabs_apt' do
@@ -16,26 +17,49 @@ describe 'puppetlabs_apt' do
       :lsbdistid => 'Debian',
       :lsbdistcodename => 'wheezy',
     }}
+
     context "without any parameters" do
       let(:params) {{ }}
 
       it_behaves_like "shared examples"
       it { should contain_apt__source('puppetlabs').with_repos('main dependencies') }
     end
+
+    context "with enable_collection => true" do
+      let(:params) { { :enable_collection => true } }
+
+      it_behaves_like "shared examples"
+      it { should contain_apt__source('puppetlabs').with_repos('main dependencies PC1') }
+    end
+
+    context "with enable_collection => false" do
+      let(:params) { { :enable_collection => false } }
+
+      it_behaves_like "shared examples"
+      it { should contain_apt__source('puppetlabs').with_repos('main dependencies') }
+    end
+
     context "with enable_devel => true" do
       let(:params) { {:enable_devel => true} }
 
       it_behaves_like "shared examples"
       it { should contain_apt__source('puppetlabs').with_repos('main dependencies devel') }
+
+      context "with enable_collection => true" do
+        let(:params) { { :enable_collection => true, :enable_devel => true } }
+
+        it_behaves_like "shared examples"
+        it { should contain_apt__source('puppetlabs').with_repos('main dependencies devel PC1') }
+      end
     end
 
     describe 'On an unsupported Debian version' do
       let(:facts) {{
           :osfamily  => 'Debian',
           :lsbdistid => 'Debian',
-          :lsbdistcodename => 'jessie',
+          :lsbdistcodename => 'stretch',
       }}
-      context "when on jessie or stretch" do
+      context "when on stretch" do
         let(:params) {{ }}
         it { should contain_apt__source('puppetlabs').with_release('wheezy') }
       end
@@ -45,7 +69,7 @@ describe 'puppetlabs_apt' do
   context 'undef release codename' do
     let(:params) {{ }}
     let(:facts) {{
-      :osfamily  => 'Debian',
+      :osfamily => 'Debian',
       :lsbdistid => 'Debian',
       :lsbdistcodename => nil,
     }}
