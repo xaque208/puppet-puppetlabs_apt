@@ -69,7 +69,7 @@ class puppetlabs_apt(
 
   if $enable_collection {
     package { 'puppetlabs-release-pc1':
-      ensure  => installed,
+      ensure  => absent,
       require => Apt::Source['puppetlabs'],
     }
   }
